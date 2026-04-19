@@ -1,0 +1,20 @@
+# Maven
+/target
+
+# IDE
+*.iml
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Spring Boot
+spring.log
+
+# Runtime
+*.class
