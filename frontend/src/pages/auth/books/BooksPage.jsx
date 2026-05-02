@@ -68,12 +68,14 @@ export default function BooksPage() {
                         <Card key={book.id}>
                             <div className="space-y-2">
                                 <h3 className="text-lg font-semibold text-slate-900">
-                                    {book.titulo}
+                                    {book.title}
                                 </h3>
-                                <p className="text-sm text-slate-600">Autor: {book.autor}</p>
-                                <p className="text-sm text-slate-600">Gênero: {book.genero}</p>
+                                <p className="text-sm text-slate-600">Autor: {book.author}</p>
                                 <p className="text-sm text-slate-600">
-                                    Status: {book.statusLeitura}
+                                    Editora: {book.publisher || 'Não informada'}
+                                </p>
+                                <p className="text-sm text-slate-600">
+                                    Publicação: {book.publishedDate || 'Não informada'}
                                 </p>
                             </div>
 
