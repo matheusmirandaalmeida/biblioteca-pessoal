@@ -27,6 +27,8 @@ export function AuthProvider({ children }) {
                 return
             }
 
+            localStorage.removeItem('preview_user')
+
             const token = localStorage.getItem('token')
 
             if (!token) {

@@ -3,26 +3,43 @@ package com.example.bibliotecapessoal.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Document(collection = "books")
 public class Book {
 
     @Id
     private String id;
-    private String title;
-    private String author;
-    private String publisher;
-    private LocalDate publishedDate;
+
+    @NotBlank(message = "Titulo e obrigatorio.")
+    @Size(max = 180, message = "Titulo deve ter no maximo 180 caracteres.")
+    private String titulo;
+
+    @NotBlank(message = "Autor e obrigatorio.")
+    @Size(max = 140, message = "Autor deve ter no maximo 140 caracteres.")
+    private String autor;
+
+    @Size(max = 80, message = "Genero deve ter no maximo 80 caracteres.")
+    private String genero;
+
+    private Integer anoPublicacao;
+
+    @Size(max = 30, message = "ISBN deve ter no maximo 30 caracteres.")
+    private String isbn;
+
+    private String statusLeitura = "QUERO_LER";
 
     public Book() {
     }
 
-    public Book(String title, String author, String publisher, LocalDate publishedDate) {
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
-        this.publishedDate = publishedDate;
+    public Book(String titulo, String autor, String genero, Integer anoPublicacao, String isbn, String statusLeitura) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.genero = genero;
+        this.anoPublicacao = anoPublicacao;
+        this.isbn = isbn;
+        this.statusLeitura = statusLeitura;
     }
 
     public String getId() {
@@ -33,35 +50,51 @@ public class Book {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
-    public LocalDate getPublishedDate() {
-        return publishedDate;
+    public Integer getAnoPublicacao() {
+        return anoPublicacao;
     }
 
-    public void setPublishedDate(LocalDate publishedDate) {
-        this.publishedDate = publishedDate;
+    public void setAnoPublicacao(Integer anoPublicacao) {
+        this.anoPublicacao = anoPublicacao;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getStatusLeitura() {
+        return statusLeitura;
+    }
+
+    public void setStatusLeitura(String statusLeitura) {
+        this.statusLeitura = statusLeitura;
     }
 }

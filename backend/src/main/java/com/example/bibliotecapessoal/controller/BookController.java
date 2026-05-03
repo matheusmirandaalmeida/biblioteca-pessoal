@@ -1,7 +1,9 @@
 package com.example.bibliotecapessoal.controller;
 
+import com.example.bibliotecapessoal.dto.BookSearchResult;
 import com.example.bibliotecapessoal.model.Book;
 import com.example.bibliotecapessoal.service.BookService;
+import com.example.bibliotecapessoal.service.ExternalBookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +15,11 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final ExternalBookService externalBookService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, ExternalBookService externalBookService) {
         this.bookService = bookService;
+        this.externalBookService = externalBookService;
     }
 
     @GetMapping
@@ -23,16 +27,21 @@ public class BookController {
         return ResponseEntity.ok(bookService.findAll());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchByAuthor(@RequestParam String author) {
+        return ResponseEntity.ok(bookService.findByAuthor(author));
+    }
+
+    @GetMapping("/external-search")
+    public ResponseEntity<List<BookSearchResult>> searchExternalBooks(@RequestParam String query) {
+        return ResponseEntity.ok(externalBookService.search(query));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable String id) {
         return bookService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchByAuthor(@RequestParam String author) {
-        return ResponseEntity.ok(bookService.findByAuthor(author));
     }
 
     @PostMapping

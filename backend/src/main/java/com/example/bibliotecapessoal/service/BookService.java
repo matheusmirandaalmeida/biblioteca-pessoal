@@ -29,7 +29,7 @@ public class BookService {
     }
 
     public List<Book> findByAuthor(String author) {
-        return bookRepository.findByAuthorContainingIgnoreCase(author);
+        return bookRepository.findByAutorContainingIgnoreCase(author);
     }
 
     public Book update(String id, Book book) {
