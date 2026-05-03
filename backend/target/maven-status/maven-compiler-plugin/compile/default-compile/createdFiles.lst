@@ -1,0 +1,5 @@
+com\example\bibliotecapessoal\model\Book.class
+com\example\bibliotecapessoal\repository\BookRepository.class
+com\example\bibliotecapessoal\service\BookService.class
+com\example\bibliotecapessoal\BibliotecaPessoalApplication.class
+com\example\bibliotecapessoal\controller\BookController.class
