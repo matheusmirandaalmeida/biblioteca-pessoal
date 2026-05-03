@@ -1,8 +1,28 @@
+import { useEffect, useState } from 'react'
 import Card from '../../../components/common/Card'
 import { useAuth } from '../../../hooks/useAuth'
+import bookService from '../../../services/bookService'
 
 export default function DashboardPage() {
     const { user } = useAuth()
+    const [books, setBooks] = useState([])
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const data = await bookService.getAll()
+                setBooks(data)
+            } catch {
+                setBooks([])
+            }
+        }
+
+        fetchBooks()
+    }, [])
+
+    const totalAuthors = new Set(books.map((book) => book.author).filter(Boolean)).size
+    const totalPublishers = new Set(books.map((book) => book.publisher).filter(Boolean)).size
+    const latestBook = books[books.length - 1]
 
     return (
         <div className="space-y-6">
@@ -18,26 +38,26 @@ export default function DashboardPage() {
             <section className="grid gap-4 md:grid-cols-3">
                 <Card>
                     <h3 className="text-sm font-medium text-slate-500">Total de livros</h3>
-                    <p className="mt-2 text-3xl font-bold text-slate-900">0</p>
+                    <p className="mt-2 text-3xl font-bold text-slate-900">{books.length}</p>
                 </Card>
 
                 <Card>
-                    <h3 className="text-sm font-medium text-slate-500">Lendo</h3>
-                    <p className="mt-2 text-3xl font-bold text-slate-900">0</p>
+                    <h3 className="text-sm font-medium text-slate-500">Autores</h3>
+                    <p className="mt-2 text-3xl font-bold text-slate-900">{totalAuthors}</p>
                 </Card>
 
                 <Card>
-                    <h3 className="text-sm font-medium text-slate-500">Finalizados</h3>
-                    <p className="mt-2 text-3xl font-bold text-slate-900">0</p>
+                    <h3 className="text-sm font-medium text-slate-500">Editoras</h3>
+                    <p className="mt-2 text-3xl font-bold text-slate-900">{totalPublishers}</p>
                 </Card>
             </section>
 
             <Card>
                 <h3 className="text-lg font-semibold text-slate-900">Resumo</h3>
                 <p className="mt-2 text-slate-600">
-                    Aqui futuramente você poderá exibir estatísticas reais vindas do backend,
-                    como quantidade de livros por status de leitura, autores mais lidos e
-                    últimos livros cadastrados.
+                    {latestBook
+                        ? `Último livro carregado: ${latestBook.title}, de ${latestBook.author}.`
+                        : 'Nenhum livro retornado pelo backend até agora.'}
                 </p>
             </Card>
         </div>

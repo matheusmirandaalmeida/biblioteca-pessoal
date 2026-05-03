@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../../../components/common/Card'
 import Button from '../../../components/common/Button'
+import Loading from '../../../components/common/Loading'
+import bookService from '../../../services/bookService'
 import Loading from '../../../components/common/Loading'
 import bookService from '../../../services/bookService'
 
@@ -68,6 +72,12 @@ export default function BookDetailsPage() {
                     <p className="text-slate-600"><strong>Status:</strong> {book.statusLeitura}</p>
                 </div>
 
+                {error && (
+                    <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                        {error}
+                    </div>
+                )}
+
                 <div className="mt-6 flex gap-3">
                     <Button type="button" onClick={() => navigate(`/livros/${id}/editar`)}>
                         Editar
@@ -80,3 +90,4 @@ export default function BookDetailsPage() {
         </div>
     )
 }
+

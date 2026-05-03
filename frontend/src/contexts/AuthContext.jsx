@@ -1,9 +1,9 @@
-import { createContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import authService from '../services/authService'
 import { PREVIEW_MODE } from '../config/env'
+import { AuthContext } from './authContext'
 
-export const AuthContext = createContext(null)
-
+// Usuário de preview para desenvolvimento sem backend
 const previewUser = {
     id: '1',
     nome: 'Lucas',
