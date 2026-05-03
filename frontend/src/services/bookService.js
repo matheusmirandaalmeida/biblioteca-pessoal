@@ -35,7 +35,7 @@ const bookService = {
     },
 
     async searchExternal(query) {
-        if (PREVIEW_MODE) {
+        if (BOOKS_PREVIEW_MODE) {
             await delay(300)
             return mockBooks.filter((book) =>
                 `${book.titulo} ${book.autor}`.toLowerCase().includes(query.toLowerCase())

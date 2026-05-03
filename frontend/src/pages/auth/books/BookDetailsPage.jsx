@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../../../components/common/Card'
 import Button from '../../../components/common/Button'
-import Loading from '../../../components/common/Loading'
-import bookService from '../../../services/bookService'
 import Loading from '../../../components/common/Loading'
 import bookService from '../../../services/bookService'
 
