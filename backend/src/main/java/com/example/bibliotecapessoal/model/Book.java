@@ -32,16 +32,19 @@ public class Book {
     @NotNull(message = "Status de leitura e obrigatorio.")
     private StatusLeitura statusLeitura = StatusLeitura.QUERO_LER;
 
+     private String userId;
+
     public Book() {
     }
 
-    public Book(String titulo, String autor, String genero, Integer anoPublicacao, String isbn, StatusLeitura statusLeitura) {
+    public Book(String titulo, String autor, String genero, Integer anoPublicacao, String isbn, StatusLeitura statusLeitura, String userId) {
         this.titulo = titulo;
         this.autor = autor;
         this.genero = genero;
         this.anoPublicacao = anoPublicacao;
         this.isbn = isbn;
         this.statusLeitura = statusLeitura;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -98,5 +101,13 @@ public class Book {
 
     public void setStatusLeitura(StatusLeitura statusLeitura) {
         this.statusLeitura = statusLeitura;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

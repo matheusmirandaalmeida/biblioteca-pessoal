@@ -8,8 +8,8 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 const normalizeBook = (book) => ({
     ...book,
     titulo: book.titulo ?? book.title,
-    autor: book.autor ?? book.author,
-    genero: book.genero ?? book.publisher,
+    autor: book.autor ?? book.autor,
+    genero: book.genero ?? book.genero,
     anoPublicacao: book.anoPublicacao ?? book.publishedDate?.slice?.(0, 4),
     statusLeitura: book.statusLeitura ?? READING_STATUS.QUERO_LER,
     userId: book.userId ?? null,
@@ -39,7 +39,9 @@ const bookService = {
     async searchExternal(query) {
         if (BOOKS_PREVIEW_MODE) {
             await delay(300)
-            return mockBooks.map(normalizeBook).filter((book) =>
+            return mockBooks
+                .map(normalizeBook)
+                .filter((book) =>
                 `${book.titulo} ${book.autor}`.toLowerCase().includes(query.toLowerCase())
             )
         }
