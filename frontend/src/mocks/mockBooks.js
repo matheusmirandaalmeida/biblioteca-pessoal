@@ -1,24 +1,29 @@
+import { READING_STATUS } from '../utils/readingStatus'
+
 const mockBooks = [
     {
         id: '1',
-        title: 'Clean Code',
-        author: 'Robert C. Martin',
-        publisher: 'Prentice Hall',
-        publishedDate: '2008-08-01',
+        titulo: 'Clean Code',
+        autor: 'Robert C. Martin',
+        genero: 'Tecnologia',
+        anoPublicacao: 2008,
+        statusLeitura: READING_STATUS.LIDO,
     },
     {
         id: '2',
-        title: 'O Hobbit',
-        author: 'J.R.R. Tolkien',
-        publisher: 'HarperCollins',
-        publishedDate: '1937-09-21',
+        titulo: 'O Hobbit',
+        autor: 'J.R.R. Tolkien',
+        genero: 'Fantasia',
+        anoPublicacao: 1937,
+        statusLeitura: READING_STATUS.LENDO,
     },
     {
         id: '3',
-        title: 'Hábitos Atômicos',
-        author: 'James Clear',
-        publisher: 'Avery',
-        publishedDate: '2018-10-16',
+        titulo: 'Hábitos Atômicos',
+        autor: 'James Clear',
+        genero: 'Desenvolvimento pessoal',
+        anoPublicacao: 2018,
+        statusLeitura: READING_STATUS.QUERO_LER,
     },
 ]
 

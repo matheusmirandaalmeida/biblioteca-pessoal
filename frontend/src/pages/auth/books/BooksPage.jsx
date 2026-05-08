@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../components/common/Button'
 import Card from '../../../components/common/Card'
 import Loading from '../../../components/common/Loading'
+import ReadingStatusBadge from '../../../components/books/ReadingStatusBadge'
 import bookService from '../../../services/bookService'
 
 export default function BooksPage() {
@@ -68,15 +69,18 @@ export default function BooksPage() {
                         <Card key={book.id}>
                             <div className="space-y-2">
                                 <h3 className="text-lg font-semibold text-slate-900">
-                                    {book.title}
+                                    {book.titulo}
                                 </h3>
-                                <p className="text-sm text-slate-600">Autor: {book.author}</p>
+                                <p className="text-sm text-slate-600">Autor: {book.autor}</p>
                                 <p className="text-sm text-slate-600">
-                                    Editora: {book.publisher || 'Não informada'}
+                                    Gênero: {book.genero || 'Não informado'}
                                 </p>
                                 <p className="text-sm text-slate-600">
-                                    Publicação: {book.publishedDate || 'Não informada'}
+                                    Publicação: {book.anoPublicacao || 'Não informada'}
                                 </p>
+                                <div className="pt-1">
+                                    <ReadingStatusBadge status={book.statusLeitura} />
+                                </div>
                             </div>
 
                             <div className="mt-4 flex gap-2">

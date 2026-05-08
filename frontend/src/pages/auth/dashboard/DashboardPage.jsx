@@ -20,8 +20,8 @@ export default function DashboardPage() {
         fetchBooks()
     }, [])
 
-    const totalAuthors = new Set(books.map((book) => book.author).filter(Boolean)).size
-    const totalPublishers = new Set(books.map((book) => book.publisher).filter(Boolean)).size
+    const totalAuthors = new Set(books.map((book) => book.autor).filter(Boolean)).size
+    const totalGenres = new Set(books.map((book) => book.genero).filter(Boolean)).size
     const latestBook = books[books.length - 1]
 
     return (
@@ -47,8 +47,8 @@ export default function DashboardPage() {
                 </Card>
 
                 <Card>
-                    <h3 className="text-sm font-medium text-slate-500">Editoras</h3>
-                    <p className="mt-2 text-3xl font-bold text-slate-900">{totalPublishers}</p>
+                    <h3 className="text-sm font-medium text-slate-500">Gêneros</h3>
+                    <p className="mt-2 text-3xl font-bold text-slate-900">{totalGenres}</p>
                 </Card>
             </section>
 
@@ -56,7 +56,7 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-semibold text-slate-900">Resumo</h3>
                 <p className="mt-2 text-slate-600">
                     {latestBook
-                        ? `Último livro carregado: ${latestBook.title}, de ${latestBook.author}.`
+                        ? `Último livro carregado: ${latestBook.titulo}, de ${latestBook.autor}.`
                         : 'Nenhum livro retornado pelo backend até agora.'}
                 </p>
             </Card>

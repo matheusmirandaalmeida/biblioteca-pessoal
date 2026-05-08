@@ -1,6 +1,7 @@
 import api from '../api/api'
 import { BOOKS_PREVIEW_MODE } from '../config/env'
 import mockBooks from '../mocks/mockBooks'
+import { READING_STATUS } from '../utils/readingStatus'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -10,14 +11,15 @@ const normalizeBook = (book) => ({
     autor: book.autor ?? book.author,
     genero: book.genero ?? book.publisher,
     anoPublicacao: book.anoPublicacao ?? book.publishedDate?.slice?.(0, 4),
-    statusLeitura: book.statusLeitura ?? 'QUERO_LER',
+    statusLeitura: book.statusLeitura ?? READING_STATUS.QUERO_LER,
+    userId: book.userId ?? null,
 })
 
 const bookService = {
     async getAll() {
         if (BOOKS_PREVIEW_MODE) {
             await delay(300)
-            return mockBooks
+            return mockBooks.map(normalizeBook)
         }
 
         const { data } = await api.get('/api/books')
@@ -27,7 +29,7 @@ const bookService = {
     async getById(id) {
         if (BOOKS_PREVIEW_MODE) {
             await delay(200)
-            return mockBooks.find((book) => book.id === id)
+            return mockBooks.map(normalizeBook).find((book) => book.id === id)
         }
 
         const { data } = await api.get(`/api/books/${id}`)
@@ -37,7 +39,7 @@ const bookService = {
     async searchExternal(query) {
         if (BOOKS_PREVIEW_MODE) {
             await delay(300)
-            return mockBooks.filter((book) =>
+            return mockBooks.map(normalizeBook).filter((book) =>
                 `${book.titulo} ${book.autor}`.toLowerCase().includes(query.toLowerCase())
             )
         }
