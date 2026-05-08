@@ -20,8 +20,8 @@ export default function DashboardPage() {
         fetchBooks()
     }, [])
 
-    const totalAuthors = new Set(books.map((book) => book.author).filter(Boolean)).size
-    const totalPublishers = new Set(books.map((book) => book.publisher).filter(Boolean)).size
+    const totalAuthors = new Set(books.map((book) => book.autor).filter(Boolean)).size
+    const totalGenres = new Set(books.map((book) => book.genero).filter(Boolean)).size
     const latestBook = books[books.length - 1]
 
     return (
