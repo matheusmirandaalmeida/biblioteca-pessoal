@@ -5,6 +5,7 @@ import Card from '../../../components/common/Card'
 import Input from '../../../components/common/Input'
 import Button from '../../../components/common/Button'
 import bookService from '../../../services/bookService'
+import { READING_STATUS, READING_STATUS_OPTIONS } from '../../../utils/readingStatus'
 
 const initialForm = {
     titulo: '',
@@ -12,7 +13,7 @@ const initialForm = {
     genero: '',
     anoPublicacao: '',
     isbn: '',
-    statusLeitura: 'QUERO_LER',
+    statusLeitura: READING_STATUS.QUERO_LER,
 }
 
 export default function CreateBookPage() {
@@ -36,7 +37,7 @@ export default function CreateBookPage() {
         genero: book.genero?.trim() || null,
         anoPublicacao: book.anoPublicacao ? Number(book.anoPublicacao) : null,
         isbn: book.isbn?.trim() || null,
-        statusLeitura: book.statusLeitura || 'QUERO_LER',
+        statusLeitura: book.statusLeitura || READING_STATUS.QUERO_LER,
     })
 
     const searchBooks = async (event) => {
@@ -224,9 +225,11 @@ export default function CreateBookPage() {
                             onChange={handleChange}
                             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
                         >
-                            <option value="QUERO_LER">QUERO_LER</option>
-                            <option value="LENDO">LENDO</option>
-                            <option value="LIDO">LIDO</option>
+                            {READING_STATUS_OPTIONS.map((status) => (
+                                <option key={status.value} value={status.value}>
+                                    {status.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
 

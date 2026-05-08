@@ -1,6 +1,7 @@
 import api from '../api/api'
 import { BOOKS_PREVIEW_MODE } from '../config/env'
 import mockBooks from '../mocks/mockBooks'
+import { READING_STATUS } from '../utils/readingStatus'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -10,7 +11,7 @@ const normalizeBook = (book) => ({
     autor: book.autor ?? book.autor,
     genero: book.genero ?? book.genero,
     anoPublicacao: book.anoPublicacao ?? book.publishedDate?.slice?.(0, 4),
-    statusLeitura: book.statusLeitura ?? 'QUERO_LER',
+    statusLeitura: book.statusLeitura ?? READING_STATUS.QUERO_LER,
     userId: book.userId ?? null,
 })
 

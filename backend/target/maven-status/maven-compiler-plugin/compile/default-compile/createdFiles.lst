@@ -1,5 +1,6 @@
 com\example\bibliotecapessoal\dto\UserResponse.class
 com\example\bibliotecapessoal\service\UserService.class
+com\example\bibliotecapessoal\model\StatusLeitura.class
 com\example\bibliotecapessoal\security\JwtAuthenticationFilter.class
 com\example\bibliotecapessoal\dto\MessageResponse.class
 com\example\bibliotecapessoal\repository\UserRepository.class

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Document(collection = "books")
@@ -28,14 +29,15 @@ public class Book {
     @Size(max = 30, message = "ISBN deve ter no maximo 30 caracteres.")
     private String isbn;
 
-    private String statusLeitura = "QUERO_LER";
+    @NotNull(message = "Status de leitura e obrigatorio.")
+    private StatusLeitura statusLeitura = StatusLeitura.QUERO_LER;
 
      private String userId;
 
     public Book() {
     }
 
-    public Book(String titulo, String autor, String genero, Integer anoPublicacao, String isbn, String statusLeitura, String userId) {
+    public Book(String titulo, String autor, String genero, Integer anoPublicacao, String isbn, StatusLeitura statusLeitura, String userId) {
         this.titulo = titulo;
         this.autor = autor;
         this.genero = genero;
@@ -93,11 +95,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getStatusLeitura() {
+    public StatusLeitura getStatusLeitura() {
         return statusLeitura;
     }
 
-    public void setStatusLeitura(String statusLeitura) {
+    public void setStatusLeitura(StatusLeitura statusLeitura) {
         this.statusLeitura = statusLeitura;
     }
 

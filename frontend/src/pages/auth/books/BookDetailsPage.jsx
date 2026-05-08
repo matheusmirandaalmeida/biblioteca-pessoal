@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../../../components/common/Card'
 import Button from '../../../components/common/Button'
 import Loading from '../../../components/common/Loading'
+import ReadingStatusBadge from '../../../components/books/ReadingStatusBadge'
 import bookService from '../../../services/bookService'
 
 export default function BookDetailsPage() {
@@ -62,10 +63,13 @@ export default function BookDetailsPage() {
                 <div className="space-y-3">
                     <h3 className="text-xl font-bold text-slate-900">{book.titulo}</h3>
                     <p className="text-slate-600"><strong>Autor:</strong> {book.autor}</p>
-                    <p className="text-slate-600"><strong>Genero:</strong> {book.genero || '-'}</p>
+                    <p className="text-slate-600"><strong>Gênero:</strong> {book.genero || '-'}</p>
                     <p className="text-slate-600"><strong>Ano:</strong> {book.anoPublicacao || '-'}</p>
                     <p className="text-slate-600"><strong>ISBN:</strong> {book.isbn || '-'}</p>
-                    <p className="text-slate-600"><strong>Status:</strong> {book.statusLeitura}</p>
+                    <div className="flex items-center gap-2 text-slate-600">
+                        <strong>Status:</strong>
+                        <ReadingStatusBadge status={book.statusLeitura} />
+                    </div>
                 </div>
 
                 {error && (

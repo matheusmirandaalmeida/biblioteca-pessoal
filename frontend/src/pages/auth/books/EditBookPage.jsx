@@ -5,6 +5,7 @@ import Input from '../../../components/common/Input'
 import Button from '../../../components/common/Button'
 import Loading from '../../../components/common/Loading'
 import bookService from '../../../services/bookService'
+import { READING_STATUS, READING_STATUS_OPTIONS } from '../../../utils/readingStatus'
 
 const initialForm = {
     titulo: '',
@@ -12,7 +13,7 @@ const initialForm = {
     genero: '',
     anoPublicacao: '',
     isbn: '',
-    statusLeitura: 'QUERO_LER',
+    statusLeitura: READING_STATUS.QUERO_LER,
 }
 
 export default function EditBookPage() {
@@ -40,7 +41,7 @@ export default function EditBookPage() {
                     genero: book.genero || '',
                     anoPublicacao: book.anoPublicacao || '',
                     isbn: book.isbn || '',
-                    statusLeitura: book.statusLeitura || 'QUERO_LER',
+                    statusLeitura: book.statusLeitura || READING_STATUS.QUERO_LER,
                 })
             } catch (err) {
                 setError(err.response?.data?.message || 'Erro ao carregar livro.')
@@ -63,7 +64,7 @@ export default function EditBookPage() {
         genero: formData.genero?.trim() || null,
         anoPublicacao: formData.anoPublicacao ? Number(formData.anoPublicacao) : null,
         isbn: formData.isbn?.trim() || null,
-        statusLeitura: formData.statusLeitura || 'QUERO_LER',
+        statusLeitura: formData.statusLeitura || READING_STATUS.QUERO_LER,
     })
 
     const handleSubmit = async (event) => {
@@ -147,9 +148,11 @@ export default function EditBookPage() {
                             onChange={handleChange}
                             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
                         >
-                            <option value="QUERO_LER">QUERO_LER</option>
-                            <option value="LENDO">LENDO</option>
-                            <option value="LIDO">LIDO</option>
+                            {READING_STATUS_OPTIONS.map((status) => (
+                                <option key={status.value} value={status.value}>
+                                    {status.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
