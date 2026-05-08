@@ -20,6 +20,7 @@ export default function DashboardPage() {
         fetchBooks()
     }, [])
 
+    // Feito normalização.
     const totalAuthors = new Set(books.map((book) => book.autor).filter(Boolean)).size
     const totalGenres = new Set(books.map((book) => book.genero).filter(Boolean)).size
     const latestBook = books[books.length - 1]

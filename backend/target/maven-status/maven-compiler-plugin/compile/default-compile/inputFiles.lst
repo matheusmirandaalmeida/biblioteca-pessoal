@@ -13,6 +13,7 @@ C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\jav
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\BibliotecaPessoalApplication.java
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\security\SecurityConfig.java
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\service\UserService.java
+C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\model\StatusLeitura.java
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\model\User.java
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\security\JwtService.java
 C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\main\java\com\example\bibliotecapessoal\dto\UserResponse.java
