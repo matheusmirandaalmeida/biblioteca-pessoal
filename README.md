@@ -58,7 +58,7 @@ Legenda:
 | [x] | Arquitetura MVC | Pacotes `controller`, `service`, `repository`, `model` e `dto` estão separados. | Padronizar DTOs de entrada/saída de livros para não expor entidade diretamente. |
 | [x] | Cadastro de usuários | Implementado com `RegisterRequest`, `User`, `UserRepository` e `UserService`. | Criar testes de integração com MongoDB real. |
 | [x] | Login e sessão via token | Implementado com JWT stateless, `JwtAuthenticationFilter` e `SecurityConfig`. | Documentar fluxo e variáveis `JWT_SECRET`/expiração. |
-| [~] | Proteção dos endpoints | `SecurityConfig` exige autenticação para qualquer rota exceto cadastro/login. | Corrigir isolamento de dados por usuário nos endpoints de livros. |
+| [x] | Proteção dos endpoints | `SecurityConfig` exige autenticação para qualquer rota exceto cadastro/login. | Corrigir isolamento de dados por usuário nos endpoints de livros. |
 | [~] | Validações de entrada | Há validações Jakarta em usuário/livro e handler de exceções. | Cobrir cenários inválidos com testes parametrizados e incluir validação de ano/status. |
 | [~] | API externa com VCR | Existe integração com Open Library em `ExternalBookService`. | Adicionar dependência/configuração de VCR para gravar/reproduzir chamadas externas nos testes. |
 | [x] | Testcontainers | Não há dependência nem configuração de Testcontainers no `pom.xml`. | Adicionar Testcontainers MongoDB e usar nos testes de integração. |
