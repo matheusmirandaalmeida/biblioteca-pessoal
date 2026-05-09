@@ -16,28 +16,31 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Book create(Book book) {
+    public Book create(Book book, String userId) {
+        book.setId(null);
+        book.setUserId(userId);
         return bookRepository.save(book);
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<Book> findAllByUserId(String userId) {
+        return bookRepository.findByUserId(userId);
     }
 
-    public Optional<Book> findById(String id) {
-        return bookRepository.findById(id);
+    public Optional<Book> findByIdAndUserId(String id, String userId) {
+        return bookRepository.findByIdAndUserId(id, userId);
     }
 
-    public List<Book> findByAuthor(String author) {
-        return bookRepository.findByAutorContainingIgnoreCase(author);
+    public List<Book> findByAuthorAndUserId(String author, String userId) {
+        return bookRepository.findByAutorContainingIgnoreCaseAndUserId(author, userId);
     }
 
-    public Book update(String id, Book book) {
+    public Book update(String id, Book book, String userId) {
         book.setId(id);
+        book.setUserId(userId);
         return bookRepository.save(book);
     }
 
-    public void delete(String id) {
-        bookRepository.deleteById(id);
+    public void delete(Book book) {
+        bookRepository.delete(book);
     }
 }
