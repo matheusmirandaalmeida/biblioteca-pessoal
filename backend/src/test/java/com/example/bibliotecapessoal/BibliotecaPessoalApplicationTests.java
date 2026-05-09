@@ -1,10 +1,8 @@
 package com.example.bibliotecapessoal;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BibliotecaPessoalApplicationTests {
+class BibliotecaPessoalApplicationTests extends AbstractMongoIntegrationTest {
 
     @Test
     void contextLoads() {
