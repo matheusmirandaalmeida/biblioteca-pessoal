@@ -47,7 +47,7 @@ Legenda:
 | [x] | CRUD de livros | `BookController` expõe endpoints de listar, buscar por ID, criar, atualizar e excluir livros. | Validar o CRUD com testes de controller/E2E usando banco real via Testcontainers. |
 | [x] | Cadastro de novos usuários | `AuthController` possui endpoint de cadastro e `UserService` normaliza email, valida duplicidade e salva usuário. | Cobrir cadastro com testes de sucesso, validação e duplicidade. |
 | [x] | Autenticação de usuários | Há endpoints de login/me/logout, JWT, filtro de autenticação e proteção de rotas no frontend. | Avaliar regras de autorização por usuário nos livros. |
-| [~] | Biblioteca pessoal por usuário | O modelo `Book` possui `userId`, mas os endpoints de livros usam `findAll`, `findById`, `save` e `deleteById` sem vincular/filtrar pelo usuário autenticado. | Ajustar controller/service para usar `@AuthenticationPrincipal`, atribuir `userId` no cadastro e impedir acesso a livros de outros usuários. |
+| [x] | Biblioteca pessoal por usuário | O modelo `Book` possui `userId`, mas os endpoints de livros usam `findAll`, `findById`, `save` e `deleteById` sem vincular/filtrar pelo usuário autenticado. | Ajustar controller/service para usar `@AuthenticationPrincipal`, atribuir `userId` no cadastro e impedir acesso a livros de outros usuários. |
 
 ## 2. Backend
 
