@@ -1,5 +1,7 @@
 # Maven
 /target
+backend/target/
+.sonar/
 
 # IDE
 *.iml

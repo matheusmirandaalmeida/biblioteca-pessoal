@@ -3,6 +3,8 @@ package com.example.bibliotecapessoal.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,6 +26,8 @@ public class Book {
     @Size(max = 80, message = "Genero deve ter no maximo 80 caracteres.")
     private String genero;
 
+    @Min(value = 0, message = "Ano de publicacao deve ser maior ou igual a 0.")
+    @Max(value = 2100, message = "Ano de publicacao deve ser menor ou igual a 2100.")
     private Integer anoPublicacao;
 
     @Size(max = 30, message = "ISBN deve ter no maximo 30 caracteres.")
@@ -32,7 +36,7 @@ public class Book {
     @NotNull(message = "Status de leitura e obrigatorio.")
     private StatusLeitura statusLeitura = StatusLeitura.QUERO_LER;
 
-     private String userId;
+    private String userId;
 
     public Book() {
     }

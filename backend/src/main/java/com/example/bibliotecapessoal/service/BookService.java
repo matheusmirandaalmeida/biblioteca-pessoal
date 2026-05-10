@@ -34,13 +34,21 @@ public class BookService {
         return bookRepository.findByAutorContainingIgnoreCaseAndUserId(author, userId);
     }
 
-    public Book update(String id, Book book, String userId) {
-        book.setId(id);
-        book.setUserId(userId);
-        return bookRepository.save(book);
+    public Optional<Book> update(String id, Book book, String userId) {
+        return bookRepository.findByIdAndUserId(id, userId)
+                .map(existingBook -> {
+                    book.setId(existingBook.getId());
+                    book.setUserId(existingBook.getUserId());
+                    return bookRepository.save(book);
+                });
     }
 
-    public void delete(Book book) {
-        bookRepository.delete(book);
+    public boolean deleteByIdAndUserId(String id, String userId) {
+        return bookRepository.findByIdAndUserId(id, userId)
+                .map(book -> {
+                    bookRepository.delete(book);
+                    return true;
+                })
+                .orElse(false);
     }
 }
