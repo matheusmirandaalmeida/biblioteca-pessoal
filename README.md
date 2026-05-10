@@ -60,10 +60,10 @@ Legenda:
 | [x] | Login e sessão via token | Implementado com JWT stateless, `JwtAuthenticationFilter` e `SecurityConfig`. | Documentar fluxo e variáveis `JWT_SECRET`/expiração. |
 | [x] | Proteção dos endpoints | `SecurityConfig` exige autenticação para qualquer rota exceto cadastro/login. | Corrigir isolamento de dados por usuário nos endpoints de livros. |
 | [x] | Validações de entrada | Há validações Jakarta em usuário/livro e handler de exceções. | Cobrir cenários inválidos com testes parametrizados e incluir validação de ano/status. |
-| [~] | API externa com VCR | Existe integração com Open Library em `ExternalBookService`. | Adicionar dependência/configuração de VCR para gravar/reproduzir chamadas externas nos testes. |
+| [x] | API externa com VCR | Existe integração com Open Library em `ExternalBookService`. | Adicionar dependência/configuração de VCR para gravar/reproduzir chamadas externas nos testes. |
 | [x] | Testcontainers | Não há dependência nem configuração de Testcontainers no `pom.xml`. | Adicionar Testcontainers MongoDB e usar nos testes de integração. |
 | [x] | JaCoCo / relatório de cobertura | Não há plugin JaCoCo no `pom.xml`. | Configurar `jacoco-maven-plugin`, gerar relatório e gate mínimo de 80%. |
-| [ ] | SonarQube | Não há configuração de Sonar no `pom.xml` ou pipeline. | Configurar análise SonarQube/SonarCloud no Maven e no CI. |
+| [x] | SonarQube | Não há configuração de Sonar no `pom.xml` ou pipeline. | Configurar análise SonarQube/SonarCloud no Maven e no CI. |
 
 ## 3. Frontend
 
