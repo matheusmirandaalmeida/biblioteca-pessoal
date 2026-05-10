@@ -10,8 +10,6 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends MongoRepository<Book, String> {
     List<Book> findByAutorContainingIgnoreCaseAndUserId(String autor, String userId);
-    List<Book> findByGeneroContainingIgnoreCase(String genero);
-    List<Book> findByStatusLeitura(String statusLeitura);
     List<Book> findByUserId(String userId);
     Optional<Book> findByIdAndUserId(String id, String userId);
 }

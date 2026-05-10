@@ -61,18 +61,17 @@ public class BookController {
             @Valid @RequestBody Book book,
             @AuthenticationPrincipal User user
     ) {
-        return bookService.findByIdAndUserId(id, user.getId())
-                .map(existing -> ResponseEntity.ok(bookService.update(id, book, user.getId())))
+        return bookService.update(id, book, user.getId())
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable String id, @AuthenticationPrincipal User user) {
-        return bookService.findByIdAndUserId(id, user.getId())
-                .map(existing -> {
-                    bookService.delete(existing);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        if (bookService.deleteByIdAndUserId(id, user.getId())) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

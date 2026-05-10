@@ -89,7 +89,9 @@ class BookServiceIntegrationTest extends AbstractMongoIntegrationTest {
                 null
         );
 
-        bookService.update(userBook.getId(), updatedBook, "user-1");
+        Optional<Book> updateResult = bookService.update(userBook.getId(), updatedBook, "user-1");
+
+        assertThat(updateResult).isPresent();
 
         assertThat(bookRepository.findByIdAndUserId(userBook.getId(), "user-1"))
                 .get()
@@ -97,5 +99,59 @@ class BookServiceIntegrationTest extends AbstractMongoIntegrationTest {
                     assertThat(foundBook.getGenero()).isEqualTo("Software");
                     assertThat(foundBook.getStatusLeitura()).isEqualTo(StatusLeitura.LIDO);
                 });
+    }
+
+    @Test
+    void updateDoesNotChangeBookFromAnotherUser() {
+        Book userBook = bookService.create(new Book(
+                "Effective Java",
+                "Joshua Bloch",
+                "Tecnologia",
+                2018,
+                "9780134685991",
+                StatusLeitura.QUERO_LER,
+                null
+        ), "user-1");
+
+        Book updatedBook = new Book(
+                "Effective Java",
+                "Joshua Bloch",
+                "Software",
+                2018,
+                "9780134685991",
+                StatusLeitura.LIDO,
+                null
+        );
+
+        Optional<Book> updateResult = bookService.update(userBook.getId(), updatedBook, "user-2");
+
+        assertThat(updateResult).isEmpty();
+        assertThat(bookRepository.findById(userBook.getId()))
+                .get()
+                .satisfies(foundBook -> {
+                    assertThat(foundBook.getUserId()).isEqualTo("user-1");
+                    assertThat(foundBook.getGenero()).isEqualTo("Tecnologia");
+                    assertThat(foundBook.getStatusLeitura()).isEqualTo(StatusLeitura.QUERO_LER);
+                });
+    }
+
+    @Test
+    void deleteDoesNotRemoveBookFromAnotherUser() {
+        Book userBook = bookService.create(new Book(
+                "Patterns of Enterprise Application Architecture",
+                "Martin Fowler",
+                "Tecnologia",
+                2002,
+                "9780321127426",
+                StatusLeitura.LENDO,
+                null
+        ), "user-1");
+
+        boolean deletedByOtherUser = bookService.deleteByIdAndUserId(userBook.getId(), "user-2");
+        boolean deletedByOwner = bookService.deleteByIdAndUserId(userBook.getId(), "user-1");
+
+        assertThat(deletedByOtherUser).isFalse();
+        assertThat(deletedByOwner).isTrue();
+        assertThat(bookRepository.findById(userBook.getId())).isEmpty();
     }
 }
