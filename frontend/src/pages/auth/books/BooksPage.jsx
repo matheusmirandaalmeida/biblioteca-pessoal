@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { BookDashed } from 'lucide-react'
 import Button from '../../../components/common/Button'
 import Card from '../../../components/common/Card'
 import Loading from '../../../components/common/Loading'
@@ -55,13 +56,19 @@ export default function BooksPage() {
             </div>
 
             {books.length === 0 ? (
-                <Card>
-                    <h3 className="text-lg font-semibold text-slate-900">
+                <Card className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="mb-4 rounded-full bg-slate-100 p-4 text-slate-400">
+                        <BookDashed size={48} strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-slate-900">
                         Nenhum livro cadastrado
                     </h3>
-                    <p className="mt-2 text-slate-600">
-                        Você ainda não possui livros cadastrados. Clique em “Novo livro” para começar.
+                    <p className="mt-2 max-w-sm text-slate-500">
+                        Você ainda não possui livros cadastrados na sua biblioteca pessoal. Clique em <strong className="font-medium text-slate-700">"Novo livro"</strong> para começar.
                     </p>
+                    <Link to="/livros/novo" className="mt-6">
+                        <Button>Adicionar Primeiro Livro</Button>
+                    </Link>
                 </Card>
             ) : (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

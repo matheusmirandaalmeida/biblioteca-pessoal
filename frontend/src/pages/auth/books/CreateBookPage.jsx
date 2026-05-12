@@ -45,7 +45,7 @@ export default function CreateBookPage() {
         setError('')
 
         if (!query.trim()) {
-            setError('Digite um titulo, autor ou ISBN para pesquisar.')
+            setError('Digite um título, autor ou ISBN para pesquisar.')
             return
         }
 
@@ -54,7 +54,7 @@ export default function CreateBookPage() {
             const data = await bookService.searchExternal(query.trim())
             setResults(data)
         } catch (err) {
-            setError(err.response?.data?.message || 'Nao foi possivel pesquisar livros.')
+            setError(err.response?.data?.message || 'Não foi possível pesquisar livros.')
         } finally {
             setLoadingSearch(false)
         }
@@ -68,7 +68,7 @@ export default function CreateBookPage() {
             await bookService.create(buildPayload(book))
             navigate('/livros')
         } catch (err) {
-            setError(err.response?.data?.message || 'Nao foi possivel salvar o livro.')
+            setError(err.response?.data?.message || 'Não foi possível salvar o livro.')
         } finally {
             setSaving(false)
         }
@@ -78,7 +78,7 @@ export default function CreateBookPage() {
         event.preventDefault()
 
         if (!formData.titulo.trim() || !formData.autor.trim()) {
-            setError('Preencha titulo e autor.')
+            setError('Preencha título e autor.')
             return
         }
 
@@ -131,7 +131,7 @@ export default function CreateBookPage() {
                                 label="Pesquisar na API"
                                 value={query}
                                 onChange={(event) => setQuery(event.target.value)}
-                                placeholder="Titulo, autor ou ISBN"
+                                placeholder="Título, autor ou ISBN"
                             />
                             <div className="flex items-end">
                                 <Button type="submit" loading={loadingSearch}>
@@ -152,7 +152,7 @@ export default function CreateBookPage() {
                                         </h3>
                                         <p className="text-sm text-slate-600">Autor: {book.autor}</p>
                                         {book.genero && (
-                                            <p className="text-sm text-slate-600">Genero: {book.genero}</p>
+                                            <p className="text-sm text-slate-600">Gênero: {book.genero}</p>
                                         )}
                                         {book.anoPublicacao && (
                                             <p className="text-sm text-slate-600">Ano: {book.anoPublicacao}</p>
@@ -179,11 +179,11 @@ export default function CreateBookPage() {
             <Card className="max-w-3xl">
                     <form onSubmit={submitManual} className="grid gap-4 md:grid-cols-2">
                     <Input
-                        label="Titulo"
+                        label="Título"
                         name="titulo"
                         value={formData.titulo}
                         onChange={handleChange}
-                        placeholder="Digite o titulo do livro"
+                        placeholder="Digite o título do livro"
                     />
                     <Input
                         label="Autor"
@@ -193,14 +193,14 @@ export default function CreateBookPage() {
                         placeholder="Digite o autor"
                     />
                     <Input
-                        label="Genero"
+                        label="Gênero"
                         name="genero"
                         value={formData.genero}
                         onChange={handleChange}
-                        placeholder="Digite o genero"
+                        placeholder="Digite o gênero"
                     />
                     <Input
-                        label="Ano de Publicacao"
+                        label="Ano de Publicação"
                         name="anoPublicacao"
                         type="number"
                         value={formData.anoPublicacao}

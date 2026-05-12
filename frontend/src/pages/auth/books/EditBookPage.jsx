@@ -31,7 +31,7 @@ export default function EditBookPage() {
                 const book = await bookService.getById(id)
 
                 if (!book) {
-                    setError('Livro nao encontrado.')
+                    setError('Livro não encontrado.')
                     return
                 }
 
@@ -72,7 +72,7 @@ export default function EditBookPage() {
         setError('')
 
         if (!formData.titulo.trim() || !formData.autor.trim()) {
-            setError('Preencha titulo e autor.')
+            setError('Preencha título e autor.')
             return
         }
 
@@ -81,7 +81,7 @@ export default function EditBookPage() {
             await bookService.update(id, buildPayload())
             navigate(`/livros/${id}`)
         } catch (err) {
-            setError(err.response?.data?.message || 'Nao foi possivel salvar as alteracoes.')
+            setError(err.response?.data?.message || 'Não foi possível salvar as alterações.')
         } finally {
             setSaving(false)
         }
@@ -107,7 +107,7 @@ export default function EditBookPage() {
             <Card className="max-w-3xl">
                 <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
                     <Input
-                        label="Titulo"
+                        label="Título"
                         name="titulo"
                         value={formData.titulo}
                         onChange={handleChange}
@@ -119,13 +119,13 @@ export default function EditBookPage() {
                         onChange={handleChange}
                     />
                     <Input
-                        label="Genero"
+                        label="Gênero"
                         name="genero"
                         value={formData.genero}
                         onChange={handleChange}
                     />
                     <Input
-                        label="Ano de Publicacao"
+                        label="Ano de Publicação"
                         name="anoPublicacao"
                         type="number"
                         value={formData.anoPublicacao}

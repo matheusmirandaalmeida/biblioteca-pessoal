@@ -1,16 +1,55 @@
-# React + Vite
+# Frontend - Gerenciador de Biblioteca Pessoal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o frontend da aplicação de gerenciamento de biblioteca, construído com React e Vite. Ele se comunica com o backend em Spring Boot para fornecer as funcionalidades reais de cadastro, login e CRUD de livros.
 
-Currently, two official plugins are available:
+## Pré-requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js (versão 18+ recomendada)
+- npm ou yarn
 
-## React Compiler
+## Instalação
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Acesse o diretório do frontend:
+   ```bash
+   cd frontend
+   ```
 
-## Expanding the ESLint configuration
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Configuração de Ambiente
+
+Para o frontend funcionar corretamente e comunicar-se com o backend real, você deve criar um arquivo `.env` na raiz da pasta `frontend`.
+
+1. Copie o arquivo `.env.example` para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Verifique o conteúdo do `.env` criado. Ele deve conter algo como:
+   ```env
+   VITE_API_URL=http://localhost:8080
+   VITE_PREVIEW_MODE=false
+   VITE_BOOKS_PREVIEW_MODE=false
+   ```
+   *Nota: O `VITE_API_URL` deve apontar para o endereço do seu backend rodando (normalmente em `http://localhost:8080`). As variáveis `PREVIEW_MODE` devem estar como `false` para desativar o comportamento de testes/mock.*
+
+## Executando o Projeto
+
+1. Certifique-se de que seu backend (Spring Boot + MongoDB) está rodando.
+2. Inicie o servidor de desenvolvimento do Vite:
+   ```bash
+   npm run dev
+   ```
+3. O aplicativo estará disponível no navegador, geralmente no endereço `http://localhost:5173`.
+
+## Funcionalidades Prontas
+
+- Cadastro e Autenticação de Usuário (via JWT integrado ao backend).
+- Dashboard com resumo de livros.
+- Listagem completa da sua biblioteca de livros.
+- Busca inteligente e adição de novos livros, tanto integrados à APIs externas quanto via preenchimento manual.
+- Visualização e edição dos detalhes de um livro.
+- Exclusão de livros da biblioteca (com fluxo de confirmação e exclusão real).

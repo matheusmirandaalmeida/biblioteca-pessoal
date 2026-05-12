@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../../../components/common/Card'
 import Button from '../../../components/common/Button'
 import Loading from '../../../components/common/Loading'
+import Modal from '../../../components/common/Modal'
 import ReadingStatusBadge from '../../../components/books/ReadingStatusBadge'
 import bookService from '../../../services/bookService'
 
@@ -12,6 +13,8 @@ export default function BookDetailsPage() {
     const [book, setBook] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -20,7 +23,7 @@ export default function BookDetailsPage() {
                 const data = await bookService.getById(id)
 
                 if (!data) {
-                    setError('Livro nao encontrado.')
+                    setError('Livro não encontrado.')
                     return
                 }
 
@@ -34,6 +37,19 @@ export default function BookDetailsPage() {
 
         fetchBook()
     }, [id])
+
+    const handleDelete = async () => {
+        try {
+            setIsDeleting(true)
+            await bookService.remove(id)
+            navigate('/livros')
+        } catch (err) {
+            setError(err.response?.data?.message || 'Erro ao excluir o livro.')
+            setIsDeleteModalOpen(false)
+        } finally {
+            setIsDeleting(false)
+        }
+    }
 
     if (loading) {
         return <Loading text="Carregando detalhes do livro..." />
@@ -78,15 +94,31 @@ export default function BookDetailsPage() {
                     </div>
                 )}
 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6 flex flex-wrap gap-3">
                     <Button type="button" onClick={() => navigate(`/livros/${id}/editar`)}>
                         Editar
                     </Button>
+                    <Button type="button" variant="secondary" onClick={() => setIsDeleteModalOpen(true)}>
+                        Excluir
+                    </Button>
+                    <div className="flex-1" />
                     <Button type="button" variant="secondary" onClick={() => navigate('/livros')}>
                         Voltar
                     </Button>
                 </div>
             </Card>
+
+            <Modal
+                isOpen={isDeleteModalOpen}
+                title="Excluir Livro"
+                confirmText={isDeleting ? 'Excluindo...' : 'Excluir'}
+                cancelText="Cancelar"
+                onClose={() => !isDeleting && setIsDeleteModalOpen(false)}
+                onConfirm={handleDelete}
+            >
+                Tem certeza que deseja excluir o livro <strong>{book.titulo}</strong>?
+                Esta ação não pode ser desfeita.
+            </Modal>
         </div>
     )
 }
