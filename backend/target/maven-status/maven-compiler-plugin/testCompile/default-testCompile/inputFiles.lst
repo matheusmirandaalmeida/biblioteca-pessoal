@@ -1,5 +1,11 @@
-C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\test\java\com\example\bibliotecapessoal\AbstractMongoIntegrationTest.java
-C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\test\java\com\example\bibliotecapessoal\service\ExternalBookServiceVcrTest.java
-C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\test\java\com\example\bibliotecapessoal\service\BookServiceIntegrationTest.java
-C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\test\java\com\example\bibliotecapessoal\controller\ValidationExceptionHandlerTest.java
-C:\Users\teumm\OneDrive\Documentos\GitHub\BIbliotecaPessoal\backend\src\test\java\com\example\bibliotecapessoal\BibliotecaPessoalApplicationTests.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/AbstractMongoIntegrationTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/model/ModelAndDtoTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/service/UserServiceTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/BibliotecaPessoalApplicationTests.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/controller/BookControllerTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/service/ExternalBookServiceVcrTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/controller/ValidationExceptionHandlerTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/controller/AuthControllerTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/service/BookServiceIntegrationTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/security/JwtAuthenticationFilterTest.java
+/mnt/c/Users/teumm/OneDrive/Documentos/GitHub/BIbliotecaPessoal/backend/src/test/java/com/example/bibliotecapessoal/security/JwtServiceTest.java
