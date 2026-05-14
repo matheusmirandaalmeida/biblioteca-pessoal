@@ -106,5 +106,3 @@ O relatório de cobertura HTML da aplicação será gerado automaticamente em:
 `backend/target/site/jacoco/index.html`. 
 O comando falha automaticamente se a cobertura de instruções ficar abaixo de 80%.
 
----
-*Este projeto é um esforço avaliativo acadêmico. Verifique também o arquivo `CHECKLIST_ANALISE.md` na raiz para o balanço de cumprimento das diretrizes do projeto.*
