@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Biblioteca Pessoal</a> &gt; <a href="index.source.html" class="el_package">com.example.bibliotecapessoal.controller</a> &gt; <span class="el_source">BookController.java</span></div><h1>BookController.java</h1><pre class="source lang-java linenums">package com.example.bibliotecapessoal.controller;
+
+import com.example.bibliotecapessoal.dto.BookSearchResult;
+import com.example.bibliotecapessoal.model.Book;
+import com.example.bibliotecapessoal.model.User;
+import com.example.bibliotecapessoal.service.BookService;
+import com.example.bibliotecapessoal.service.ExternalBookService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/books&quot;)
+@CrossOrigin(origins = {&quot;http://localhost:5173&quot;, &quot;http://127.0.0.1:5173&quot;})
+public class BookController {
+
+    private final BookService bookService;
+    private final ExternalBookService externalBookService;
+
+<span class="fc" id="L23">    public BookController(BookService bookService, ExternalBookService externalBookService) {</span>
+<span class="fc" id="L24">        this.bookService = bookService;</span>
+<span class="fc" id="L25">        this.externalBookService = externalBookService;</span>
+<span class="fc" id="L26">    }</span>
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Book&gt;&gt; getAllBooks(@AuthenticationPrincipal User user) {
+<span class="fc" id="L30">        return ResponseEntity.ok(bookService.findAllByUserId(user.getId()));</span>
+    }
+
+    @GetMapping(&quot;/search&quot;)
+    public ResponseEntity&lt;List&lt;Book&gt;&gt; searchByAuthor(
+            @RequestParam String author,
+            @AuthenticationPrincipal User user
+    ) {
+<span class="fc" id="L38">        return ResponseEntity.ok(bookService.findByAuthorAndUserId(author, user.getId()));</span>
+    }
+
+    @GetMapping(&quot;/external-search&quot;)
+    public ResponseEntity&lt;List&lt;BookSearchResult&gt;&gt; searchExternalBooks(@RequestParam String query) {
+<span class="fc" id="L43">        return ResponseEntity.ok(externalBookService.search(query));</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Book&gt; getBookById(@PathVariable String id, @AuthenticationPrincipal User user) {
+<span class="fc" id="L48">        return bookService.findByIdAndUserId(id, user.getId())</span>
+<span class="fc" id="L49">                .map(ResponseEntity::ok)</span>
+<span class="fc" id="L50">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Book&gt; createBook(@Valid @RequestBody Book book, @AuthenticationPrincipal User user) {
+<span class="fc" id="L55">        return ResponseEntity.ok(bookService.create(book, user.getId()));</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Book&gt; updateBook(
+            @PathVariable String id,
+            @Valid @RequestBody Book book,
+            @AuthenticationPrincipal User user
+    ) {
+<span class="fc" id="L64">        return bookService.update(id, book, user.getId())</span>
+<span class="fc" id="L65">                .map(ResponseEntity::ok)</span>
+<span class="fc" id="L66">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteBook(@PathVariable String id, @AuthenticationPrincipal User user) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (bookService.deleteByIdAndUserId(id, user.getId())) {</span>
+<span class="fc" id="L72">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="fc" id="L75">        return ResponseEntity.notFound().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

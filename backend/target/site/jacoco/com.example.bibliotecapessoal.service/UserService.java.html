@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Biblioteca Pessoal</a> &gt; <a href="index.source.html" class="el_package">com.example.bibliotecapessoal.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.example.bibliotecapessoal.service;
+
+import com.example.bibliotecapessoal.dto.AuthResponse;
+import com.example.bibliotecapessoal.dto.LoginRequest;
+import com.example.bibliotecapessoal.dto.RegisterRequest;
+import com.example.bibliotecapessoal.dto.UserResponse;
+import com.example.bibliotecapessoal.model.User;
+import com.example.bibliotecapessoal.repository.UserRepository;
+import com.example.bibliotecapessoal.security.JwtService;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Locale;
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+<span class="fc" id="L25">    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {</span>
+<span class="fc" id="L26">        this.userRepository = userRepository;</span>
+<span class="fc" id="L27">        this.passwordEncoder = passwordEncoder;</span>
+<span class="fc" id="L28">        this.jwtService = jwtService;</span>
+<span class="fc" id="L29">    }</span>
+
+    public UserResponse register(RegisterRequest request) {
+<span class="fc" id="L32">        String email = normalizeEmail(request.email());</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (userRepository.existsByEmail(email)) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;Email ja cadastrado.&quot;);</span>
+        }
+
+<span class="fc" id="L38">        User user = new User(</span>
+<span class="fc" id="L39">                request.nome().trim(),</span>
+                email,
+<span class="fc" id="L41">                passwordEncoder.encode(request.senha())</span>
+        );
+<span class="fc" id="L43">        user.setCreatedAt(Instant.now());</span>
+
+<span class="fc" id="L45">        return UserResponse.from(userRepository.save(user));</span>
+    }
+
+    public AuthResponse login(LoginRequest request) {
+<span class="fc" id="L49">        User user = userRepository.findByEmail(normalizeEmail(request.email()))</span>
+<span class="fc" id="L50">                .orElseThrow(() -&gt; new BadCredentialsException(&quot;Credenciais invalidas.&quot;));</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!passwordEncoder.matches(request.senha(), user.getPassword())) {</span>
+<span class="fc" id="L53">            throw new BadCredentialsException(&quot;Credenciais invalidas.&quot;);</span>
+        }
+
+<span class="fc" id="L56">        return new AuthResponse(jwtService.generateToken(user), UserResponse.from(user));</span>
+    }
+
+    public Optional&lt;User&gt; findById(String id) {
+<span class="fc" id="L60">        return userRepository.findById(id);</span>
+    }
+
+    private String normalizeEmail(String email) {
+<span class="fc" id="L64">        return email.trim().toLowerCase(Locale.ROOT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
