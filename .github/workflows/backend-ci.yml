@@ -34,7 +34,7 @@ jobs:
           cache: maven
 
       - name: Run tests and coverage
-        run: mvn -B test jacoco:report
+        run: mvn -B verify
 
       - name: Upload JaCoCo report
         if: always()
@@ -86,7 +86,7 @@ jobs:
           if [ -n "$SONAR_ORGANIZATION" ]; then
             SONAR_ARGS="$SONAR_ARGS -Dsonar.organization=$SONAR_ORGANIZATION"
           fi
-          mvn -B test jacoco:report sonar:sonar $SONAR_ARGS
+          mvn -B verify sonar:sonar $SONAR_ARGS
 
       - name: Skip SonarCloud
         if: ${{ env.SONAR_TOKEN == '' }}

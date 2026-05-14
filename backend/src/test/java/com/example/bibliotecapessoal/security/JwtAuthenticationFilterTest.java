@@ -1,91 +1,92 @@
 package com.example.bibliotecapessoal.security;
 
+import com.example.bibliotecapessoal.AbstractMongoIntegrationTest;
 import com.example.bibliotecapessoal.model.User;
-import com.example.bibliotecapessoal.service.UserService;
+import com.example.bibliotecapessoal.repository.UserRepository;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Optional;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class JwtAuthenticationFilterTest {
+class JwtAuthenticationFilterTest extends AbstractMongoIntegrationTest {
 
-    @Mock
+    @Autowired
+    private JwtAuthenticationFilter filter;
+
+    @Autowired
     private JwtService jwtService;
 
-    @Mock
-    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @AfterEach
-    void clearSecurityContext() {
+    void cleanUp() {
         SecurityContextHolder.clearContext();
+        userRepository.deleteAll();
     }
 
     @Test
     void doFilterContinuesWithoutAuthorizationHeader() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtService, userService);
-        FilterChain filterChain = mock(FilterChain.class);
+        RecordingFilterChain filterChain = new RecordingFilterChain();
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         filter.doFilter(request, response, filterChain);
 
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
-        verify(jwtService, never()).extractSubject("token");
-        verify(filterChain).doFilter(request, response);
+        assertThat(filterChain.invocations).isEqualTo(1);
     }
 
     @Test
     void doFilterAuthenticatesUserFromBearerToken() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtService, userService);
-        FilterChain filterChain = mock(FilterChain.class);
+        RecordingFilterChain filterChain = new RecordingFilterChain();
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("Authorization", "Bearer token");
         MockHttpServletResponse response = new MockHttpServletResponse();
-        User user = new User("Maria", "maria@example.com", "password");
-        user.setId("user-1");
-
-        when(jwtService.extractSubject("token")).thenReturn(Optional.of("user-1"));
-        when(userService.findById("user-1")).thenReturn(Optional.of(user));
+        User user = userRepository.save(new User("Maria", "maria@example.com", "password"));
+        request.addHeader("Authorization", "Bearer " + jwtService.generateToken(user));
 
         filter.doFilter(request, response, filterChain);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).isSameAs(user);
-        verify(filterChain).doFilter(request, response);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        assertThat(principal).isInstanceOf(User.class);
+        assertThat(((User) principal).getId()).isEqualTo(user.getId());
+        assertThat(filterChain.invocations).isEqualTo(1);
     }
 
     @Test
     void doFilterDoesNotReplaceExistingAuthentication() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtService, userService);
-        FilterChain filterChain = mock(FilterChain.class);
+        RecordingFilterChain filterChain = new RecordingFilterChain();
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("Authorization", "Bearer token");
         MockHttpServletResponse response = new MockHttpServletResponse();
         User existingUser = new User("Existing", "existing@example.com", "password");
+        User tokenUser = userRepository.save(new User("Maria", "maria@example.com", "password"));
+        request.addHeader("Authorization", "Bearer " + jwtService.generateToken(tokenUser));
         SecurityContextHolder.getContext().setAuthentication(
-                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(existingUser, null)
+                new UsernamePasswordAuthenticationToken(existingUser, null)
         );
-        User tokenUser = new User("Maria", "maria@example.com", "password");
-
-        when(jwtService.extractSubject("token")).thenReturn(Optional.of("user-1"));
-        when(userService.findById("user-1")).thenReturn(Optional.of(tokenUser));
 
         filter.doFilter(request, response, filterChain);
 
         assertThat(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).isSameAs(existingUser);
-        verify(filterChain).doFilter(request, response);
+        assertThat(filterChain.invocations).isEqualTo(1);
+    }
+
+    private static class RecordingFilterChain implements FilterChain {
+        private int invocations;
+
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response) throws IOException {
+            invocations++;
+        }
     }
 }

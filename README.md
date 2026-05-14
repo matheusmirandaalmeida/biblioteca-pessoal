@@ -32,8 +32,9 @@ Aplicação completa para cadastro e gerenciamento de livros de uma biblioteca p
 - **Requisições:** Axios (Com interceptor para os JWTs)
 
 ### Qualidade e Testes (Estratégia Caixa Preta e E2E)
-- **Testcontainers:** Testes de integração diretos com o banco MongoDB, erradicando o uso de Mocks do `Mockito` na camada principal.
+- **Testcontainers:** Testes de integração diretos com o banco MongoDB, sem biblioteca de mock nos testes do projeto.
 - **VCR (Hoverfly):** Gravação e reprodução das chamadas para a API do Open Library.
+- **Frontend:** Testes automatizados com **Vitest**, **jsdom** e **Testing Library** via `npm run test`.
 - **Cobertura de Código:** Cobertura avaliada por **JaCoCo**, com regra restrita de falha caso não atinja **>80%**.
 - **Análise Estática:** Integração contínua e Quality Gate realizados por **SonarQube/SonarCloud**.
 - **CI/CD:** Pipeline robusta rodando no **GitHub Actions**.
@@ -94,16 +95,16 @@ A interface do frontend iniciará em: `http://localhost:5173/`
 
 Os testes do backend garantem a estabilidade seguindo os padrões do **Testcontainers** para testes de contexto limpo em banco MongoDB real, e VCR para API.
 
-Para rodar todos os testes e gerar o relatório do JaCoCo:
+Para rodar todos os testes, gerar o relatório do JaCoCo e aplicar a regra mínima de 80%:
 
 ```bash
 cd backend
-mvn clean test jacoco:report
+mvn clean verify
 ```
 
 O relatório de cobertura HTML da aplicação será gerado automaticamente em:
 `backend/target/site/jacoco/index.html`. 
-Abra o arquivo no seu navegador para validar que a cobertura é superior a 80%.
+O comando falha automaticamente se a cobertura de instruções ficar abaixo de 80%.
 
 ---
 *Este projeto é um esforço avaliativo acadêmico. Verifique também o arquivo `CHECKLIST_ANALISE.md` na raiz para o balanço de cumprimento das diretrizes do projeto.*

@@ -6,6 +6,8 @@ export default function Modal({
     onConfirm,
     confirmText = 'Confirmar',
     cancelText = 'Cancelar',
+    confirmDisabled = false,
+    cancelDisabled = false,
 }) {
     if (!isOpen) return null
 
@@ -19,14 +21,16 @@ export default function Modal({
                 <div className="mt-6 flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="rounded-lg bg-slate-200 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300"
+                        disabled={cancelDisabled}
+                        className="rounded-lg bg-slate-200 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {cancelText}
                     </button>
 
                     <button
                         onClick={onConfirm}
-                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                        disabled={confirmDisabled}
+                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {confirmText}
                     </button>

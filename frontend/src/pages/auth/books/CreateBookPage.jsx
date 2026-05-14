@@ -16,11 +16,13 @@ const initialForm = {
     statusLeitura: READING_STATUS.QUERO_LER,
 }
 
-export default function CreateBookPage() {
+export default function CreateBookPage({ service = bookService }) {
     const navigate = useNavigate()
     const [mode, setMode] = useState('search')
     const [query, setQuery] = useState('')
     const [results, setResults] = useState([])
+    const [hasSearched, setHasSearched] = useState(false)
+    const [lastSearch, setLastSearch] = useState('')
     const [formData, setFormData] = useState(initialForm)
     const [loadingSearch, setLoadingSearch] = useState(false)
     const [saving, setSaving] = useState(false)
@@ -43,16 +45,22 @@ export default function CreateBookPage() {
     const searchBooks = async (event) => {
         event.preventDefault()
         setError('')
+        setHasSearched(false)
+        setResults([])
 
         if (!query.trim()) {
             setError('Digite um titulo, autor ou ISBN para pesquisar.')
             return
         }
 
+        const searchTerm = query.trim()
+
         try {
             setLoadingSearch(true)
-            const data = await bookService.searchExternal(query.trim())
+            const data = await service.searchExternal(searchTerm)
             setResults(data)
+            setLastSearch(searchTerm)
+            setHasSearched(true)
         } catch (err) {
             setError(err.response?.data?.message || 'Nao foi possivel pesquisar livros.')
         } finally {
@@ -65,7 +73,7 @@ export default function CreateBookPage() {
 
         try {
             setSaving(true)
-            await bookService.create(buildPayload(book))
+            await service.create(buildPayload(book))
             navigate('/livros')
         } catch (err) {
             setError(err.response?.data?.message || 'Nao foi possivel salvar o livro.')
@@ -141,6 +149,24 @@ export default function CreateBookPage() {
                             </div>
                         </form>
                     </Card>
+
+                    {hasSearched && !loadingSearch && results.length === 0 && (
+                        <Card className="max-w-3xl">
+                            <h3 className="text-lg font-semibold text-slate-900">
+                                Nenhum resultado encontrado
+                            </h3>
+                            <p className="mt-2 text-sm text-slate-600">
+                                A API respondeu, mas nao encontrou livros para "{lastSearch}".
+                                Tente buscar por outro titulo, autor ou ISBN.
+                            </p>
+                        </Card>
+                    )}
+
+                    {hasSearched && results.length > 0 && (
+                        <p className="text-sm text-slate-600">
+                            API consultada com sucesso. {results.length} resultado(s) encontrado(s) para "{lastSearch}".
+                        </p>
+                    )}
 
                     {results.length > 0 && (
                         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

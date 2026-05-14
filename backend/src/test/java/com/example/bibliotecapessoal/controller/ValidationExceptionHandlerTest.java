@@ -1,71 +1,56 @@
 package com.example.bibliotecapessoal.controller;
 
-import com.example.bibliotecapessoal.exception.ApiExceptionHandler;
+import com.example.bibliotecapessoal.AbstractMongoIntegrationTest;
+import com.example.bibliotecapessoal.dto.LoginRequest;
+import com.example.bibliotecapessoal.dto.RegisterRequest;
 import com.example.bibliotecapessoal.model.StatusLeitura;
-import com.example.bibliotecapessoal.model.User;
-import com.example.bibliotecapessoal.service.BookService;
-import com.example.bibliotecapessoal.service.ExternalBookService;
-import com.example.bibliotecapessoal.service.UserService;
+import com.example.bibliotecapessoal.repository.BookRepository;
+import com.example.bibliotecapessoal.repository.UserRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.core.MethodParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ValidationExceptionHandlerTest {
+@AutoConfigureMockMvc
+class ValidationExceptionHandlerTest extends AbstractMongoIntegrationTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private MockMvc mockMvc;
 
-    private MockMvc authMockMvc;
-    private MockMvc bookMockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-        validator.afterPropertiesSet();
+    @Autowired
+    private BookRepository bookRepository;
 
-        authMockMvc = MockMvcBuilders.standaloneSetup(new AuthController(mock(UserService.class)))
-                .setControllerAdvice(new ApiExceptionHandler())
-                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
-                .setValidator(validator)
-                .build();
+    @Autowired
+    private UserRepository userRepository;
 
-        bookMockMvc = MockMvcBuilders.standaloneSetup(new BookController(
-                        mock(BookService.class),
-                        mock(ExternalBookService.class)
-                ))
-                .setControllerAdvice(new ApiExceptionHandler())
-                .setCustomArgumentResolvers(new AuthenticatedUserArgumentResolver())
-                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
-                .setValidator(validator)
-                .build();
+    @AfterEach
+    void cleanDatabase() {
+        bookRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @ParameterizedTest
     @MethodSource("invalidRegisterRequests")
     void registerReturnsBadRequestForInvalidPayload(Map<String, Object> payload, String expectedMessage)
             throws Exception {
-        authMockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isBadRequest())
@@ -76,7 +61,8 @@ class ValidationExceptionHandlerTest {
     @MethodSource("invalidBookRequests")
     void createBookReturnsBadRequestForInvalidPayload(Map<String, Object> payload, String expectedMessage)
             throws Exception {
-        bookMockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books")
+                        .header("Authorization", "Bearer " + registerAndLogin())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isBadRequest())
@@ -86,11 +72,33 @@ class ValidationExceptionHandlerTest {
     @ParameterizedTest
     @MethodSource("invalidStatusRequests")
     void createBookReturnsBadRequestForInvalidStatus(String payload, String expectedMessage) throws Exception {
-        bookMockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books")
+                        .header("Authorization", "Bearer " + registerAndLogin())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(expectedMessage));
+    }
+
+    private String registerAndLogin() throws Exception {
+        String email = "user-" + System.nanoTime() + "@example.com";
+        String senha = "password123";
+
+        mockMvc.perform(post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new RegisterRequest("User", email, senha))))
+                .andExpect(status().isOk());
+
+        String loginResponse = mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new LoginRequest(email, senha))))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        JsonNode response = objectMapper.readTree(loginResponse);
+        return response.get("token").asText();
     }
 
     private static Stream<Arguments> invalidRegisterRequests() {
@@ -143,26 +151,5 @@ class ValidationExceptionHandlerTest {
         payload.put("isbn", "9780132350884");
         payload.put("statusLeitura", statusLeitura);
         return payload;
-    }
-
-    private static class AuthenticatedUserArgumentResolver implements HandlerMethodArgumentResolver {
-
-        @Override
-        public boolean supportsParameter(MethodParameter parameter) {
-            return parameter.hasParameterAnnotation(AuthenticationPrincipal.class)
-                    && parameter.getParameterType().equals(User.class);
-        }
-
-        @Override
-        public Object resolveArgument(
-                MethodParameter parameter,
-                ModelAndViewContainer mavContainer,
-                NativeWebRequest webRequest,
-                WebDataBinderFactory binderFactory
-        ) {
-            User user = new User("Test User", "test@example.com", "password");
-            user.setId("user-1");
-            return user;
-        }
     }
 }

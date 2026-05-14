@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class JwtServiceTest {
 
@@ -59,11 +56,14 @@ class JwtServiceTest {
     }
 
     @Test
-    void generateTokenWrapsJsonProcessingFailures() throws Exception {
-        ObjectMapper failingObjectMapper = mock(ObjectMapper.class);
-        when(failingObjectMapper.writeValueAsBytes(any()))
-                .thenThrow(new JsonProcessingException("boom") {
-                });
+    void generateTokenWrapsJsonProcessingFailures() {
+        ObjectMapper failingObjectMapper = new ObjectMapper() {
+            @Override
+            public byte[] writeValueAsBytes(Object value) throws JsonProcessingException {
+                throw new JsonProcessingException("boom") {
+                };
+            }
+        };
         JwtService jwtService = new JwtService(failingObjectMapper, "test-secret", 60);
 
         assertThatThrownBy(() -> jwtService.generateToken(user()))

@@ -26,12 +26,13 @@ Análise atualizada baseada nos critérios de entrega do projeto.
 - [x] **Experiência do Usuário (UX):** Tratamento de estados visuais (Loading, alertas de erro).
 
 ## 3. Estratégia de Testes
-- [x] **Mínimo 80% Cobertura:** Atingido. A cobertura atual ultrapassa facilmente 90% via JaCoCo.
+- [x] **Mínimo 80% Cobertura:** Atingido e aplicado no CI via `mvn verify`, que executa o `jacoco:check` configurado no `pom.xml`.
 - [x] **Parametrizados (Múltiplos cenários):** Presente em `ValidationExceptionHandlerTest.java` (`@ParameterizedTest`).
-- [x] **Atenção: O uso de Mocks está proibido no projeto final:** **(Atendido com sucesso!)** Você refatorou incrivelmente o `AuthControllerTest` e `BookControllerTest` para remover o `Mockito`, utilizando integração plena com o banco de dados via `Testcontainers`. *Observação: Ainda existem resquícios de `mock()` em testes isolados de unidade como `ValidationExceptionHandlerTest` e `JwtServiceTest`, veja se o professor permite testes estritamente unitários com Mockito, caso contrário, remova-os.*
+- [x] **Atenção: O uso de Mocks está proibido no projeto final:** **Atendido.** Os testes foram refatorados para não usar biblioteca de mock; fluxos HTTP e serviços usam objetos reais, banco via `Testcontainers` ou implementações manuais simples quando o teste é unitário.
 - [x] **Caixa Preta (E2E / Controller):** Agora os Controllers executam testes reais (Caixa Preta) enviando requisições HTTP simuladas (`MockMvc`) que batem no banco de dados MongoDB via Testcontainers!
 - [x] **Caixa Branca (Lógica interna):** Atendido pelas validações internas de models e serviços.
 - [x] **Unitários/Integração (Com Testcontainers e VCR):** Totalmente aderente ao escopo do projeto.
+- [x] **Testes automatizados frontend:** Vitest + Testing Library configurados no frontend, cobrindo componentes comuns, badge de status, rota protegida e validação de login.
 
 ## 4. Documento RTM.md
 - [x] **Documento RTM.md:** Arquivo gerado com sucesso!
@@ -42,5 +43,4 @@ Análise atualizada baseada nos critérios de entrega do projeto.
 - [x] **Repositório no GitHub:** Código organizado e versionado de forma eficiente.
 - [x] **Qualidade Automatizada:** Pipeline funcional com cobertura e SonarQube.
 - [x] **Relatório de Cobertura:** Gerado de forma automatizada pelo JaCoCo (garantindo evidências limpas).
-- [~] **Documentação (`README.md` e `RTM.md`):** O RTM está completo. Só falta garantir que o `README.md` possui instruções diretas e completas para o ambiente final, e talvez adicionar as insignias (badges) da Pipeline CI e Cobertura.
-
+- [x] **Documentação (`README.md` e `RTM.md`):** O RTM com todos os diagramas de sequência e a matriz de rastreabilidade está completo.

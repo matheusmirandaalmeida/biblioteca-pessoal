@@ -1,0 +1,15 @@
+com\example\bibliotecapessoal\security\JwtAuthenticationFilterTest.class
+com\example\bibliotecapessoal\controller\BookControllerTest$AuthenticatedUser.class
+com\example\bibliotecapessoal\controller\ValidationExceptionHandlerTest.class
+com\example\bibliotecapessoal\security\JwtServiceTest$1$1.class
+com\example\bibliotecapessoal\controller\AuthControllerTest.class
+com\example\bibliotecapessoal\security\JwtAuthenticationFilterTest$RecordingFilterChain.class
+com\example\bibliotecapessoal\service\BookServiceIntegrationTest.class
+com\example\bibliotecapessoal\service\ExternalBookServiceVcrTest.class
+com\example\bibliotecapessoal\AbstractMongoIntegrationTest.class
+com\example\bibliotecapessoal\controller\BookControllerTest.class
+com\example\bibliotecapessoal\security\JwtServiceTest$1.class
+com\example\bibliotecapessoal\service\UserServiceTest.class
+com\example\bibliotecapessoal\BibliotecaPessoalApplicationTests.class
+com\example\bibliotecapessoal\model\ModelAndDtoTest.class
+com\example\bibliotecapessoal\security\JwtServiceTest.class

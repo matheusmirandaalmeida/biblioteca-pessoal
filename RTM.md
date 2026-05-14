@@ -52,14 +52,14 @@ Legenda de status:
 
 | ID | Requisito | Implementação | Evidência/Testes | Status |
 | --- | --- | --- | --- | --- |
-| RQ-01 | Cobertura mínima de 80%. | `jacoco-maven-plugin` com regra de cobertura no `backend/pom.xml`. | Execução Maven gera `target/site/jacoco`; checklist registra cobertura acima de 93%. | Atendido |
+| RQ-01 | Cobertura mínima de 80%. | `jacoco-maven-plugin` com regra `check` vinculada ao phase `verify` no `backend/pom.xml`; CI executa `mvn -B verify`. | `mvn verify` executa testes, gera `target/site/jacoco` e falha se a cobertura de instruções ficar abaixo de 80%. | Atendido |
 | RQ-02 | Testes de caixa preta/controller sem mocks para fluxos HTTP. | `AuthControllerTest` e `BookControllerTest` com `@SpringBootTest` herdado de `AbstractMongoIntegrationTest` e `MockMvc`. | Testes exercitam endpoints reais e MongoDB via Testcontainers. | Atendido |
 | RQ-03 | Testes com Testcontainers. | `AbstractMongoIntegrationTest` inicia `MongoDBContainer`. | Classes de integração herdam a base Mongo. | Atendido |
 | RQ-04 | Testes com VCR. | Hoverfly configurado no teste da Open Library. | `ExternalBookServiceVcrTest`. | Atendido |
 | RQ-05 | Testes parametrizados. | `ValidationExceptionHandlerTest` com `@ParameterizedTest`. | Cenários inválidos de cadastro, livro e status. | Atendido |
 | RQ-06 | Testes de caixa branca para regras internas. | Serviços e segurança testados diretamente. | `UserServiceTest`, `JwtServiceTest`, `JwtAuthenticationFilterTest`, `ModelAndDtoTest`. | Atendido |
-| RQ-07 | Eliminar Mockito do projeto final. | Controllers já foram refatorados para integração real. | Ainda há uso de Mockito em testes unitários/validação listados pelo `rg`; se a regra for absoluta, esses testes precisam de nova refatoração. | Parcial |
-| RQ-08 | Testes frontend. | Não há dependências/scripts de teste frontend no `package.json`. | Não identificado. | Pendente |
+| RQ-07 | Eliminar bibliotecas de simulação do projeto final. | Testes de controller, serviço, validação e segurança usam objetos reais, Testcontainers ou implementações manuais simples; o frontend não mantém mais modo preview com dados falsos. | Busca por padrões de simulação nos fontes não encontra chamadas ou anotações desse tipo. | Atendido |
+| RQ-08 | Testes frontend. | Frontend configurado com Vitest, jsdom e Testing Library, com scripts `test` e `test:watch`. | `Button.test.jsx`, `Modal.test.jsx`, `ReadingStatusBadge.test.jsx`, `ProtectedRoute.test.jsx` e `LoginPage.test.jsx`; `npm run test` com 9 testes aprovados. | Atendido |
 
 ## Matriz de Documentação e Entrega
 
@@ -68,7 +68,7 @@ Legenda de status:
 | RD-01 | README com visão geral e execução. | `README.md`. | Documento versionado na raiz. | Parcial |
 | RD-02 | RTM com matriz de rastreabilidade. | `RTM.md`. | Este documento. | Atendido |
 | RD-03 | Diagramas UML de sequência no RTM. | Diagramas Mermaid nas seções abaixo. | Este documento. | Atendido |
-| RD-04 | Relatório de cobertura. | JaCoCo configurado para gerar relatório em build. | `backend/pom.xml`; artefatos gerados em `backend/target/site/jacoco`. | Atendido |
+| RD-04 | Relatório de cobertura. | JaCoCo configurado para gerar relatório e validar cobertura no phase `verify`. | `backend/pom.xml`; artefatos gerados em `backend/target/site/jacoco`; workflow executa `mvn -B verify`. | Atendido |
 | RD-05 | Repositório versionado no GitHub. | Histórico Git e workflow. | Evidência pelo próprio repositório. | Atendido |
 
 ## Diagramas de Sequência UML
@@ -314,6 +314,6 @@ sequenceDiagram
 
 | ID | Lacuna | Impacto | Próxima ação sugerida |
 | --- | --- | --- | --- |
-| GAP-01 | Ainda há Mockito em testes fora de `AuthControllerTest` e `BookControllerTest`. | Pode violar a regra se a proibição for absoluta para todo o backend. | Refatorar `ValidationExceptionHandlerTest`, `UserServiceTest`, `JwtServiceTest` e `JwtAuthenticationFilterTest` para alternativas sem Mockito ou justificar escopo unitário. |
-| GAP-02 | Não há testes automatizados frontend. | Requisitos de UI, sessão e responsividade ficam cobertos apenas por evidência de implementação. | Adicionar testes de componentes ou E2E para login, rotas protegidas e CRUD. |
+| GAP-01 | Removida. A regra de ausência de mocks foi atendida nos testes e no frontend. | Sem impacto pendente. | Manter novas contribuições sem bibliotecas de mock ou dados falsos de preview. |
+| GAP-02 | Removida. Há testes automatizados frontend. | Sem impacto pendente. | Expandir cobertura gradualmente para CRUD completo e fluxos E2E quando houver ambiente de execução dedicado. |
 | GAP-03 | README ainda está parcial frente ao escopo completo. | Dificulta reprodução da entrega por avaliadores. | Atualizar README com backend, frontend, variáveis, Docker/Testcontainers, testes, cobertura e CI. |
