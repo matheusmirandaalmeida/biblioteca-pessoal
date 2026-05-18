@@ -1,0 +1,60 @@
+{
+  "data": {
+    "pairs": [
+      {
+        "request": {
+          "path": [
+            {
+              "matcher": "exact",
+              "value": "/search.json"
+            }
+          ],
+          "method": [
+            {
+              "matcher": "exact",
+              "value": "GET"
+            }
+          ],
+          "destination": [
+            {
+              "matcher": "exact",
+              "value": "openlibrary.org"
+            }
+          ],
+          "scheme": [
+            {
+              "matcher": "exact",
+              "value": "https"
+            }
+          ],
+          "body": [
+            {
+              "matcher": "exact",
+              "value": ""
+            }
+          ]
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"docs\":[{\"title\":\"Clean Code\",\"author_name\":[\"Robert C. Martin\"],\"first_publish_year\":2008,\"isbn\":[\"9780132350884\"],\"subject\":[\"Software engineering\"]},{\"title\":\"Incomplete Result Without Author\",\"first_publish_year\":2020}]}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          },
+          "templated": false
+        }
+      }
+    ],
+    "globalActions": {
+      "delays": [],
+      "delaysLogNormal": []
+    }
+  },
+  "meta": {
+    "schemaVersion": "v5",
+    "hoverflyVersion": "v1.12.6",
+    "timeExported": "2026-05-09T00:00:00-03:00"
+  }
+}

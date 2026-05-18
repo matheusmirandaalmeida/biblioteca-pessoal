@@ -1,0 +1,53 @@
+-------------------------------------------------------------------------------
+Test set: com.example.bibliotecapessoal.controller.AuthControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 3.159 s <<< FAILURE! -- in com.example.bibliotecapessoal.controller.AuthControllerTest
+com.example.bibliotecapessoal.controller.AuthControllerTest.registerPersistsAndReturnsCreatedUser -- Time elapsed: 0.015 s <<< ERROR!
+java.lang.ExceptionInInitializerError
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: java.lang.IllegalStateException: Could not find a valid Docker environment. Please see logs and check configuration
+	at org.testcontainers.dockerclient.DockerClientProviderStrategy.lambda$getFirstValidStrategy$7(DockerClientProviderStrategy.java:277)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at org.testcontainers.dockerclient.DockerClientProviderStrategy.getFirstValidStrategy(DockerClientProviderStrategy.java:268)
+	at org.testcontainers.DockerClientFactory.getOrInitializeStrategy(DockerClientFactory.java:152)
+	at org.testcontainers.DockerClientFactory.client(DockerClientFactory.java:194)
+	at org.testcontainers.DockerClientFactory$1.getDockerClient(DockerClientFactory.java:106)
+	at com.github.dockerjava.api.DockerClientDelegate.authConfig(DockerClientDelegate.java:109)
+	at org.testcontainers.containers.GenericContainer.start(GenericContainer.java:329)
+	at com.example.bibliotecapessoal.AbstractMongoIntegrationTest.<clinit>(AbstractMongoIntegrationTest.java:14)
+	... 5 more
+
+com.example.bibliotecapessoal.controller.AuthControllerTest.meReturnsAuthenticatedUserFromJwt -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class com.example.bibliotecapessoal.controller.AuthControllerTest
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.ExceptionInInitializerError [in thread "main"]
+	... 5 more
+
+com.example.bibliotecapessoal.controller.AuthControllerTest.logoutReturnsSuccessMessageForAuthenticatedUser -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class com.example.bibliotecapessoal.controller.AuthControllerTest
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.ExceptionInInitializerError [in thread "main"]
+	... 5 more
+
+com.example.bibliotecapessoal.controller.AuthControllerTest.loginReturnsAuthResponseForPersistedUser -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class com.example.bibliotecapessoal.controller.AuthControllerTest
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.ExceptionInInitializerError [in thread "main"]
+	... 5 more
+
